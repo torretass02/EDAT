@@ -12,6 +12,7 @@
 #define GRAPH_H
 
 #include "vertex.h"
+#include "types.h"
 
 typedef struct _Graph Graph;
 

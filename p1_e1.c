@@ -30,13 +30,15 @@ int main(){
     }
 
     printf("Vertex 2 tag: %s\n", vertex_getTag(v2));
-
+    
     v3 = vertex_copy(v1);
-
+    
     printf("Vertex 3 id: %ld\n", vertex_getId(v3));
 
     vertex_print(stdout, v1);
     vertex_print(stdout, v3);
+
+    printf("\n");
 
     printf("Equals? ");
     if(vertex_cmp(v1, v3)==0){
@@ -46,5 +48,7 @@ int main(){
         printf("No\n");
     }
 
-
+    vertex_free(v1);
+    vertex_free(v2);
+    vertex_free(v3);
 }

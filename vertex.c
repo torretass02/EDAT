@@ -30,7 +30,7 @@ Status vertex_setField (Vertex *v, char *key, char *value) {
 }
 
 /*----------------------------------------------------------------------------------------*/
-Vertex *vertex_initFromString(char *descr){
+Vertex * vertex_initFromString(char *descr){
   char buffer[1024];
   char *token;
   char *key;
@@ -70,6 +70,7 @@ Vertex * vertex_init (){
   v->id = 0;
   strcpy(v->tag, "");
   v->state = WHITE;
+  return v;
 }
 
 void vertex_free (void * v){
@@ -128,17 +129,26 @@ int vertex_cmp (const void * v1, const void * v2){
   else if (vertex_getId(v1) == vertex_getId(v2)){
     return strcmp(vertex_getTag(v1), vertex_getTag(v2));
   }
+
+  else return 0;
 }
 
 void * vertex_copy (const void * src){
+  if(!src) return NULL;
+
   Vertex * v = NULL;
   v = malloc(sizeof(Vertex));
+  
   
   vertex_setId(v, vertex_getId(src));
   vertex_setTag(v, vertex_getTag(src));
   vertex_setState(v, vertex_getState(src));
+  return v;
 }
 
 int vertex_print (FILE * pf, const void * v){
+  if(!pf || !v) return -1;
+
   printf("[%ld, %s, %d]", vertex_getId(v), vertex_getTag(v), vertex_getState(v));
+  return 0;
 }
