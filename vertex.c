@@ -67,6 +67,7 @@ Vertex * vertex_initFromString(char *descr){
 Vertex * vertex_init (){ 
   Vertex * v = NULL;   
   v = malloc(sizeof(Vertex));
+  if(!v) return NULL;
   v->id = 0;
   strcpy(v->tag, "");
   v->state = WHITE;
