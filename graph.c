@@ -4,7 +4,7 @@
 
 struct _Graph {
     Vertex *vertices[MAX_VTX];
-    Bool connections[MAX_VTX][MAX_VTX];
+    Bool connections[ ][MAX_VTX];
     int num_vertices;
     int num_edges;
 };
@@ -86,13 +86,11 @@ Bool graph_connectionExists(const Graph *g, long orig, long dest){
 int graph_getNumberOfConnectionsFromId(const Graph *g, long id){
     if(!g || !id) return -1;
 
-    int i, j, num=0;
+    int i, num=0;
 
     for(i=0;i<g->num_vertices;i++){
-        for(j=0;j<g->num_vertices;j++){
-            if(graph_connectionExists(g, id, j)==TRUE){
-                num++;
-            }
+        if(graph_connectionExists(g, id, i)==TRUE){
+            num++;
         }
     }
 
@@ -102,21 +100,20 @@ int graph_getNumberOfConnectionsFromId(const Graph *g, long id){
 long *graph_getConnectionsFromId(const Graph *g, long id){
     if(!g || !id) return NULL;
 
-    int i, j, num = 0, array[MAX_VTX];
+    int i, num = 0, array[MAX_VTX];
 
     for(i=0;i<g->num_vertices;i++){
-        for(j=0;j<g->num_vertices;j++){
-            if(graph_connectionExists(g, id, j)==TRUE){
-                array[num] = j;
-                num++;
-            }
+        if(graph_connectionExists(g, id, i)==TRUE){
+            array[num] = i;
+            num++;
         }
     }
+
     return array;
 }
 
 int graph_getNumberOfConnectionsFromTag(const Graph *g, char *tag){
-
+    
 }
 
 long *graph_getConnectionsFromTag(const Graph *g, char *tag){
