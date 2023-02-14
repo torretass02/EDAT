@@ -2,8 +2,6 @@
 #include "types.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>  /* YOUR CODE HERE */
-
 
 #define INIT_SIZE 4
 #define GROWTH_FACTOR 2
@@ -29,6 +27,8 @@ SList *sl_new() {
     free(lst);
     return NULL;
   }
+  lst->capacity = INIT_SIZE;
+  lst->num_elem = 0;
   return lst;
 }
 
@@ -56,21 +56,26 @@ int sl_size(SList *lst) {
 Bool _sl_isfull(SList *lst) {
   if (!lst)
     return TRUE;
-  return lst->capacity = lst->num_elem - 1;
+  return lst->capacity == lst->num_elem;
 }
 
 /* _sl_grow: private function */
 /* makes lst->data bigger to be able to store more strings */
 Status _sl_grow(SList *lst) {
+  int new_size;
+  char **aux;
+
   if (!lst || !lst->data)
     return ERROR;
-  lst->capacity = lst->capacity * GROWTH_FACTOR;
-  lst->data = realloc(lst->data, sizeof(char *) * lst->capacity);
+  new_size = lst->capacity * GROWTH_FACTOR;
+  aux = realloc(lst->data, sizeof(char *) * new_size);
 
-  if (!(lst->data)) {
-    free(lst);
+  if (!aux) {
     return ERROR;
   }
+  /* update SList fields */
+  lst->capacity = new_size;
+  lst->data = aux;
   return OK;
 }
 
@@ -81,11 +86,6 @@ Status _sl_grow(SList *lst) {
 Status sl_append(SList *l, char *str) {
   if(!l || !str) return ERROR;
 
-  if(l->capacity == 0|| l->capacity == -1){
-    
-    l->capacity = 1;
-  }
-
   if(_sl_isfull(l)==TRUE){
     _sl_grow(l);
   }
@@ -94,30 +94,33 @@ Status sl_append(SList *l, char *str) {
   l->num_elem++;
 
   return OK;
-};
+}
 
 /* remove last string from SList */
 /* str contains that string, if any, at the end*/
 /* returns OK if successful, ERROR otherwise (e.g. if the list is empty) */
+
 Status sl_removeLast(SList *l, char **str) {
-  if(!l || !str) return ERROR;
-
-  if(sl_empty(l) == TRUE) return ERROR;
-
+  if(!l||!str) return ERROR;
+  if(sl_empty(l)==TRUE){
+    return ERROR;
+  }
+  
   *str = l->data[l->num_elem-1];
-
-  return ERROR;
+  l->data[l->num_elem-1] = NULL;
+  l->num_elem--;
+  return OK;
 }
 
-/* returns in str the string in position pos in SList */
-Status sl_get(SList *lst, int pos, char *str) {
+/* returns in arg str the string in position pos in SList */
+Status sl_get(SList *lst, int pos, char **str) {
   /* check all arguments */
   if (!lst || !(pos > -1) || !str || !(lst->data))
     return ERROR;
   /* check position is ok (within bounds)*/
   if (pos >= lst->num_elem)
     return ERROR;
-  str = lst->data[pos];
+  *str = lst->data[pos];
   return OK;
 };
 
@@ -133,7 +136,7 @@ void sl_print(SList *lst) {
   int i;
   if (!lst || !(lst->data))
     return;
-  for (i = 0; i < lst->capacity; i++) {
+  for (i = 0; i < lst->num_elem; i++) {
     printf("%s ", lst->data[i]);
   }
 };

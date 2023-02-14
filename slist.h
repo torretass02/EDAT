@@ -5,7 +5,7 @@
 typedef struct _SList SList;
 
 SList *sl_new();
-void sl_free();
+void sl_free(SList *lst);
 
 /* add str to the end of SList l */
 /* if not NULL, str is assumed to be a NULL-terminated C string*/
@@ -18,7 +18,7 @@ Status sl_append(SList *lst, char *str);
 Status sl_removeLast(SList *lst, char **str);
 
 /* returns in str the string in position pos in SList */
-Status sl_get(SList *lst, int pos, char *str);
+Status sl_get(SList *lst, int pos, char **str);
 
 /* returns true of SList l is empty */
 Bool sl_empty(SList *lst);

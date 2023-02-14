@@ -28,17 +28,15 @@ int main(int argc, char **argv) {
   if (argc == 1) {
     // run with no arguments
     for (i = 0; i < 2; i++) {
-      printf("Adding %s\n", str[i]);
-      printf("STATUS DEL APPEND: %d\n", sl_append(lst, str[i]));
+      // printf("Adding %s\n", str[i]);
+      sl_append(lst, str[i]);
     }
-    printf("LISTA1: ");
     sl_print(lst);
     printf("\n");
     for (i = 0; i < 4; i++) {
-      printf("Adding %s\n", str2[i]);
+      // printf("Adding %s\n", str2[i]);
       sl_append(lst, str2[i]);
     }
-    printf("LISTA2: ");
     sl_print(lst);
     printf("\n");
     printf("Removing last:\n");
@@ -46,6 +44,7 @@ int main(int argc, char **argv) {
     printf("Removed %s\nList now:\n", removed);
     sl_print(lst);
     printf("\n");
+    sl_free(lst);
     exit(EXIT_SUCCESS);
   }
 
@@ -57,6 +56,7 @@ int main(int argc, char **argv) {
     sl_print(lst);
     printf("\n");
     // for (i = 1; i < argc / 2; i++)
+    sl_free(lst);
     exit(EXIT_SUCCESS);
   }
 }
