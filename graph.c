@@ -114,6 +114,7 @@ long *graph_getConnectionsFromId(const Graph *g, long id){
     long int * array;
 
     array = malloc(sizeof(int)*graph_getNumberOfConnectionsFromId(g, id));
+    if(!array) return NULL;
 
     for(i=0;i<MAX_VTX;i++){
         if(graph_connectionExists(g, id, i)==TRUE){
@@ -154,6 +155,7 @@ long *graph_getConnectionsFromTag(const Graph *g, char *tag){
     long int * array;
 
     array = malloc(sizeof(int)*MAX_VTX);
+    if(!array) return NULL;
 
     Vertex * v = NULL;
 
@@ -193,5 +195,13 @@ int graph_print (FILE *pf, const Graph *g){
 }
 
 Status graph_readFromFile (FILE *fin, Graph *g){
+    if(!fin || !g) return ERROR;
 
+    fin = fopen("file.txt", "r");
+
+    fscanf(fin, "%d", &g->num_vertices);
+    fscanf(fin, "%s", &g);
+    
+
+    return OK;
 }

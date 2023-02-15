@@ -37,14 +37,20 @@ int main(){
     }
 
     printf("Number of connections from 111: %d\n", graph_getNumberOfConnectionsFromId(g, 111));
-    printf("Number of connections from Toledo: %d\n", graph_getNumberOfConnectionsFromTag(g, vertex_getTag(v2)));
+    printf("Number of connections from Toledo: %d\n", graph_getNumberOfConnectionsFromTag(g, "Toledo"));
 
-    array = graph_getConnectionsFromTag(g, vertex_getTag(v2));
+    array = graph_getConnectionsFromTag(g, "Toledo");
 
     printf("Connections from Toledo: ");
     for(i=0; i<graph_getNumberOfConnectionsFromId(g, vertex_getId(v2)); i++){
         printf("%ld ", array[i]);
     }
     printf("\n");
+    printf("Graph:\n");
+    graph_print(stdout, g);
 
+    graph_free(g);
+    vertex_free(v1);
+    vertex_free(v2);
+    free(array);
 }
