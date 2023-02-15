@@ -149,7 +149,6 @@ void * vertex_copy (const void * src){
 
 int vertex_print (FILE * pf, const void * v){
   if(!pf || !v) return -1;
-
-  printf("[%ld, %s, %d]", vertex_getId(v), vertex_getTag(v), vertex_getState(v));
-  return 0;
+  
+  return fprintf(pf, "[%ld, %s, %d]", vertex_getId(v), vertex_getTag(v), vertex_getState(v));
 }

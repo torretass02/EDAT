@@ -4,17 +4,27 @@
 
 struct _Graph {
     Vertex *vertices[MAX_VTX];
-    Bool connections[ ][MAX_VTX];
+    Bool connections[MAX_VTX][MAX_VTX];
     int num_vertices;
     int num_edges;
 };
 
 Graph * graph_init(){
     Graph * g;
+    int i, j;
+
     g = malloc(sizeof(Graph));
     if (!g) return NULL;
+
+    for(i=0; i<MAX_VTX; i++){
+        for(j=0; j<MAX_VTX; j++){
+            g->connections[i][j] = FALSE;
+        }
+    }
     g->num_vertices = 0;
     g->num_edges = 0;
+
+    return g;
 }
 
 void graph_free(Graph *g){
@@ -88,7 +98,7 @@ int graph_getNumberOfConnectionsFromId(const Graph *g, long id){
 
     int i, num=0;
 
-    for(i=0;i<g->num_vertices;i++){
+    for(i=0;i<MAX_VTX;i++){
         if(graph_connectionExists(g, id, i)==TRUE){
             num++;
         }
@@ -100,9 +110,12 @@ int graph_getNumberOfConnectionsFromId(const Graph *g, long id){
 long *graph_getConnectionsFromId(const Graph *g, long id){
     if(!g || !id) return NULL;
 
-    int i, num = 0, array[MAX_VTX];
+    int i, num = 0;
+    long int * array;
 
-    for(i=0;i<g->num_vertices;i++){
+    array = malloc(sizeof(int)*graph_getNumberOfConnectionsFromId(g, id));
+
+    for(i=0;i<MAX_VTX;i++){
         if(graph_connectionExists(g, id, i)==TRUE){
             array[num] = i;
             num++;
@@ -113,18 +126,72 @@ long *graph_getConnectionsFromId(const Graph *g, long id){
 }
 
 int graph_getNumberOfConnectionsFromTag(const Graph *g, char *tag){
-    
+    if(!g || !tag) return -1;
+
+    int i, num = 0;
+
+    Vertex * v = NULL;
+
+    for(i=0; i<g->num_vertices; i++){
+        if(strcmp(vertex_getTag(g->vertices[i]), tag)==0){
+            v = vertex_copy(g->vertices[i]);
+        }    
+    }
+
+    for(i=0;i<MAX_VTX;i++){
+        if(graph_connectionExists(g, vertex_getId(v), i)==TRUE){
+            num++;
+        }
+    }
+
+    return num;
 }
 
 long *graph_getConnectionsFromTag(const Graph *g, char *tag){
+    if(!g || !tag) return NULL;
 
+    int i, num = 0;
+    long int * array;
+
+    array = malloc(sizeof(int)*MAX_VTX);
+
+    Vertex * v = NULL;
+
+    for(i=0; i<g->num_vertices; i++){
+        if(strcmp(vertex_getTag(g->vertices[i]), tag)==0){
+            v = vertex_copy(g->vertices[i]);
+        }    
+    }
+
+    for(i=0;i<MAX_VTX;i++){
+        if(graph_connectionExists(g, vertex_getId(v), i)==TRUE){
+            array[num] = i;
+            num++;
+        }
+    }
+
+    return array;
 }
 
 int graph_print (FILE *pf, const Graph *g){
+    if(!pf || !g) return -1;
 
+    int i, j, cont = 0;
+
+    for(i=0; i<g->num_vertices; i++){
+        cont += vertex_print(pf, g->vertices[i]);
+        cont += fprintf(pf, ": ");
+        for(j=0; j<g->num_vertices; j++){
+            if(graph_connectionExists(g, vertex_getId(g->vertices[i]), vertex_getId(g->vertices[j]))==TRUE){
+                cont += vertex_print(pf, g->vertices[j]);
+            }
+        }
+        cont += fprintf(pf, "\n");
+    }
+    
+    return cont;
 }
 
 Status graph_readFromFile (FILE *fin, Graph *g){
 
 }
-
