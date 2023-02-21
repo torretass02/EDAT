@@ -28,6 +28,12 @@ Graph * graph_init(){
 }
 
 void graph_free(Graph *g){
+    int i;
+
+    for(i = 0; i<g->num_vertices;i++){
+        vertex_free(g->vertices[i]);
+    }
+
     free(g);
 }
 
@@ -37,6 +43,11 @@ Status graph_newVertex(Graph *g, char *desc){
     Vertex * v;
     v = vertex_initFromString(desc);
     if(!v) return ERROR;
+
+    if(g->num_vertices == MAX_VTX){
+        vertex_free(v);
+        return ERROR;
+    }
 
     if(graph_contains(g, vertex_getId(v))==FALSE){
         g->vertices[g->num_vertices] = v;
@@ -129,20 +140,16 @@ long *graph_getConnectionsFromId(const Graph *g, long id){
 int graph_getNumberOfConnectionsFromTag(const Graph *g, char *tag){
     if(!g || !tag) return -1;
 
-    int i, num = 0;
-
-    Vertex * v = NULL;
+    int i, j, num = 0;
 
     for(i=0; i<g->num_vertices; i++){
         if(strcmp(vertex_getTag(g->vertices[i]), tag)==0){
-            v = vertex_copy(g->vertices[i]);
+            for(j=0;j<MAX_VTX;j++){
+                if(graph_connectionExists(g, vertex_getId(g->vertices[i]), j)==TRUE){
+                    num++;
+                }
+            }
         }    
-    }
-
-    for(i=0;i<MAX_VTX;i++){
-        if(graph_connectionExists(g, vertex_getId(v), i)==TRUE){
-            num++;
-        }
     }
 
     return num;
@@ -151,25 +158,21 @@ int graph_getNumberOfConnectionsFromTag(const Graph *g, char *tag){
 long *graph_getConnectionsFromTag(const Graph *g, char *tag){
     if(!g || !tag) return NULL;
 
-    int i, num = 0;
+    int i, j, num = 0;
     long int * array;
 
     array = malloc(sizeof(int)*MAX_VTX);
     if(!array) return NULL;
 
-    Vertex * v = NULL;
-
     for(i=0; i<g->num_vertices; i++){
         if(strcmp(vertex_getTag(g->vertices[i]), tag)==0){
-            v = vertex_copy(g->vertices[i]);
+            for(j=0;j<MAX_VTX;j++){
+                if(graph_connectionExists(g, vertex_getId(g->vertices[i]), j)==TRUE){
+                    array[num] = j;
+                    num++;
+                }
+            }
         }    
-    }
-
-    for(i=0;i<MAX_VTX;i++){
-        if(graph_connectionExists(g, vertex_getId(v), i)==TRUE){
-            array[num] = i;
-            num++;
-        }
     }
 
     return array;
@@ -196,12 +199,23 @@ int graph_print (FILE *pf, const Graph *g){
 
 Status graph_readFromFile (FILE *fin, Graph *g){
     if(!fin || !g) return ERROR;
+    int i, num;
+    char desc[1024];
+    long num1, num2;
 
-    fin = fopen("file.txt", "r");
+    fgets(desc, 1024, fin);
 
-    fscanf(fin, "%d", &g->num_vertices);
-    fscanf(fin, "%s", &g);
-    
+    sscanf(desc, "%d", &num);
+
+    for(i=0; i<num; i++){
+        fgets(desc, 1024, fin);
+        graph_newVertex(g, desc);
+    }
+
+    while(fgets(desc, 1024,fin)!=NULL){
+        sscanf(desc, "%ld %ld", &num1, &num2);
+        graph_newEdge(g, num1, num2);
+    }
 
     return OK;
 }

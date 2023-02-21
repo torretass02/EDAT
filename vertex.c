@@ -66,7 +66,7 @@ Vertex * vertex_initFromString(char *descr){
 
 Vertex * vertex_init (){ 
   Vertex * v = NULL;   
-  v = malloc(sizeof(Vertex));
+  v = (Vertex*) malloc(sizeof(Vertex));
   if(!v) return NULL;
   v->id = 0;
   strcpy(v->tag, "");
@@ -138,8 +138,8 @@ void * vertex_copy (const void * src){
   if(!src) return NULL;
 
   Vertex * v = NULL;
-  v = malloc(sizeof(Vertex));
-  
+  v = vertex_init();
+  if (!v) return NULL;
   
   vertex_setId(v, vertex_getId(src));
   vertex_setTag(v, vertex_getTag(src));
