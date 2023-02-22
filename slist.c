@@ -87,7 +87,9 @@ Status sl_append(SList *l, char *str) {
   if(!l || !str) return ERROR;
 
   if(_sl_isfull(l)==TRUE){
-    _sl_grow(l);
+    if(_sl_grow(l)==ERROR){
+      return ERROR;
+    }
   }
 
   l->data[l->num_elem] = str;
