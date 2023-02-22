@@ -9,6 +9,38 @@ struct _Graph {
     int num_edges;
 };
 
+/**
+ * @brief Returns the vertex which has the tag passed by argument.
+ *
+ * Checks if there is any vertex in the graph with the tag passed
+ * by argument. 
+ * 
+ * @param g Pointer to the graph.
+ * @param tag Tag of the vertex.
+ *
+ * @return Return the vertex if it was done correctly, 
+ * otherwise return NULL.
+ **/
+Vertex * graph_GetVertexFromTag(const Graph * g, char * tag);
+
+//PRIVATE FUNCTIONS
+Vertex * graph_GetVertexFromTag(const Graph * g, char * tag){
+    if(!g || !tag) return NULL;
+
+    int i;
+
+    for(i=0; i<g->num_vertices; i++){
+        if(strcmp(vertex_getTag(g->vertices[i]), tag)==0){
+            return g->vertices[i];
+        }
+    }
+
+    return NULL;
+}
+
+//PRIVATE FUNCTIONS
+
+
 Graph * graph_init(){
     Graph * g;
     int i, j;
@@ -28,6 +60,8 @@ Graph * graph_init(){
 }
 
 void graph_free(Graph *g){
+    if(!g) return;
+
     int i;
 
     for(i = 0; i<g->num_vertices;i++){
@@ -140,39 +174,31 @@ long *graph_getConnectionsFromId(const Graph *g, long id){
 int graph_getNumberOfConnectionsFromTag(const Graph *g, char *tag){
     if(!g || !tag) return -1;
 
-    int i, j, num = 0;
+    int i, num = 0;
 
-    for(i=0; i<g->num_vertices; i++){
-        if(strcmp(vertex_getTag(g->vertices[i]), tag)==0){
-            for(j=0;j<MAX_VTX;j++){
-                if(graph_connectionExists(g, vertex_getId(g->vertices[i]), j)==TRUE){
-                    num++;
-                }
-            }
-        }    
+    for(i=0;i<MAX_VTX;i++){
+        if(graph_connectionExists(g, vertex_getId(graph_GetVertexFromTag(g, tag)), i)==TRUE){
+            num++;
+        }
     }
-
+           
     return num;
 }
 
 long *graph_getConnectionsFromTag(const Graph *g, char *tag){
     if(!g || !tag) return NULL;
 
-    int i, j, num = 0;
+    int i, num = 0;
     long int * array;
 
     array = malloc(sizeof(int)*MAX_VTX);
     if(!array) return NULL;
 
-    for(i=0; i<g->num_vertices; i++){
-        if(strcmp(vertex_getTag(g->vertices[i]), tag)==0){
-            for(j=0;j<MAX_VTX;j++){
-                if(graph_connectionExists(g, vertex_getId(g->vertices[i]), j)==TRUE){
-                    array[num] = j;
-                    num++;
-                }
-            }
-        }    
+    for(i=0;i<MAX_VTX;i++){
+        if(graph_connectionExists(g, vertex_getId(graph_GetVertexFromTag(g, tag)), i)==TRUE){
+            array[num] = i;
+            num++; 
+        }
     }
 
     return array;

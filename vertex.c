@@ -66,11 +66,14 @@ Vertex * vertex_initFromString(char *descr){
 
 Vertex * vertex_init (){ 
   Vertex * v = NULL;   
+
   v = (Vertex*) malloc(sizeof(Vertex));
   if(!v) return NULL;
-  v->id = 0;
-  strcpy(v->tag, "");
-  v->state = WHITE;
+
+  vertex_setId(v, 0);
+  vertex_setTag(v, "");
+  vertex_setState(v, WHITE);
+  
   return v;
 }
 
@@ -111,8 +114,8 @@ Status vertex_setTag (Vertex * v, const char * tag){
 }
 
 Status vertex_setState (Vertex * v, const Label state){
-  if(!v || !state) return ERROR;
-
+  if(!v || (state!=0 && state!=1)) return ERROR;
+  
   v->state = state;
   return OK;
 }

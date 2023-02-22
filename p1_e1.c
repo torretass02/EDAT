@@ -10,15 +10,38 @@ int main(){
     v1 = vertex_init();
     v2 = vertex_init();
 
-    vertex_setId(v1, 10);
-    vertex_setId(v2, 20);
-    vertex_setTag(v1, "one");
-    vertex_setTag(v2, "two");
-    vertex_setState(v1, WHITE);
-    vertex_setState(v2, BLACK);
-
-    vertex_print(stdout, v1);
-    vertex_print(stdout, v2);
+    if(vertex_setId(v1, 10)==ERROR){
+        printf("ERROR al asignar ID.\n");
+        return -1;
+    }
+    else if(vertex_setId(v2, 20)==ERROR){
+        printf("ERROR al asignar ID.\n");
+        return -1;
+    }
+    else if(vertex_setTag(v1, "one")==ERROR){
+        printf("ERROR al asignar TAG.\n");
+        return -1;
+    }
+    else if(vertex_setTag(v2, "two")==ERROR){
+        printf("ERROR al asignar TAG.\n");
+        return -1;
+    }
+    else if(vertex_setState(v1, WHITE)==ERROR){
+        printf("ERROR al asignar STATELUIS.\n");
+        
+    }
+    else if(vertex_setState(v2, BLACK)==ERROR){
+        printf("ERROR al asignar STATE.\n");
+        return -1;
+    }
+    else if(vertex_print(stdout, v1)==-1){
+        printf("ERROR al IMPRIMIR vertex.\n");
+        return -1;
+    }
+    else if(vertex_print(stdout, v2)==-1){
+        printf("ERROR al IMPRIMIR vertex.\n");
+        return -1;
+    }
     printf("\n");
 
     printf("Equals? ");
@@ -35,8 +58,14 @@ int main(){
     
     printf("Vertex 3 id: %ld\n", vertex_getId(v3));
 
-    vertex_print(stdout, v1);
-    vertex_print(stdout, v3);
+    if(vertex_print(stdout, v1)==-1){
+        printf("ERROR al IMPRIMIR vertex.\n");
+        return -1;
+    }
+    else if(vertex_print(stdout, v3)==-1){
+        printf("ERROR al IMPRIMIR vertex.\n");
+        return -1;
+    }
 
     printf("\n");
 
