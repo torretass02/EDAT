@@ -24,7 +24,10 @@ int main(int argc, char**argv){
         return -1;
     }
 
-    graph_readFromFile(f, g);
+    if(graph_readFromFile(f, g) == ERROR){
+        printf("ERROR al LEER GRAFO desde un archivo.\n");
+        return -1;
+    }
     
     graph_print(stdout, g);
 

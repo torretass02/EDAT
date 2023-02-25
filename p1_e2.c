@@ -14,11 +14,23 @@ int main(){
     v2 = vertex_initFromString("id:222 tag:Toledo state:0");
 
     a = graph_newVertex(g, "id:111 tag:Madrid state:0");
+    if(a == ERROR){
+        printf("ERROR al INSERTAR VERTEX en el grafo.\n");
+        return -1;
+    }
     printf("Inserting %s... result ...: %d\n", vertex_getTag(v1), a);
-    b = graph_newVertex(g, "id:222 tag:Toledo state:0");
-    printf("Inserting %s... result ...: %d\n", vertex_getTag(v1), b);
 
-    graph_newEdge(g, vertex_getId(v2), vertex_getId(v1));
+    b = graph_newVertex(g, "id:222 tag:Toledo state:0");
+    if(b == ERROR){
+        printf("ERROR al INSERTAR VERTEX en el grafo.\n");
+        return -1;
+    }
+    printf("Inserting %s... result ...: %d\n", vertex_getTag(v2), b);
+
+    if(graph_newEdge(g, vertex_getId(v2), vertex_getId(v1))==ERROR){
+        printf("ERROR al IMPRIMIR vertex.\n");
+        return -1;
+    }
     printf("Inserting edge: %ld --> %ld\n", vertex_getId(v2),vertex_getId(v1));
 
     if(graph_connectionExists(g, vertex_getId(v1), vertex_getId(v2))==TRUE){
@@ -40,6 +52,10 @@ int main(){
     printf("Number of connections from Toledo: %d\n", graph_getNumberOfConnectionsFromTag(g, "Toledo"));
 
     array = graph_getConnectionsFromTag(g, "Toledo");
+    if(array == NULL){
+        printf("ERROR al OBTENER CONEXIONES a partir de un tag.\n");
+        return -1;
+    }
 
     printf("Connections from Toledo: ");
     for(i=0; i<graph_getNumberOfConnectionsFromId(g, vertex_getId(v2)); i++){
