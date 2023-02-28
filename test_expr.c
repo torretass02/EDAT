@@ -73,6 +73,7 @@ void test_evalPostfix(char *expr) {
     return;
 
   st = evalPostfix(expr, &result);
+  
   if (st == OK) {
     printf("%s returns %d\n", expr, result);
   } else {
@@ -88,7 +89,11 @@ void test_many_evalPostfix() {
   all_tests[3] = "2*5"; // invalid expression, '*' does not hace two arguments in stack
   all_tests[4] = "5b*"; // invalid expression, 'b' is neither a digit nor an operator
 
-  test_evalPostfix(all_tests[0]);
+  for(i=0; i<num_tests; i++){
+    test_evalPostfix(all_tests[i]);
+  }
+
+  //test_evalPostfix(all_tests[4]);
   
   free(all_tests);
 }

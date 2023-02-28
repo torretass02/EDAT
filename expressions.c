@@ -135,38 +135,45 @@ Bool balancedParens(char *str){
 
 Status evalPostfix(char *expr, int *result){
   Stack * s = NULL;
-  int i, e, a1, a2;
+  int i, e;
   Status st = OK;
-  char * arg2;
-  char * arg1;
+  int *arg2, *arg1, *push, *a;
 
   if(!expr || !result) return ERROR;
   s = stack_init();
 
   for(i=0; i<strlen(expr); i++){
-    if(isOperand(expr[i])==TRUE){
-      if(stack_push(s, &expr[i])==ERROR){
-        st = ERROR;
-      }
+    if(isOperand(expr[i])==TRUE && isIntOperand(expr[i])==TRUE){
+      push = int_init(expr[i]-48);
+      st = stack_push(s, push)==ERROR;
     }
     else if(isOperator(expr[i])==TRUE){
-      arg2 = stack_pop(s);
-      arg1 = stack_pop(s);
-
-      a1 = arg1[0]-48;
-      a2 = arg2[0]-48;
-
-      e = evaluate(a1, a2, expr[i]);
-
-      printf("EVALUATED = %d %c %d = %d\n", a1, expr[i], a2, e);
-      
-      if(stack_push(s, &e)==ERROR){
-        st = ERROR;
+      if(stack_isEmpty(s)==FALSE){
+        arg2 = stack_pop(s);
       }
+      else{
+        return ERROR;
+      }
+      
+      if(stack_isEmpty(s)==FALSE){
+        arg1 = stack_pop(s);
+      }
+      else{
+        return ERROR;
+      }
+
+      e =evaluate(*arg1, *arg2, expr[i]);
+      
+      st = stack_push(s, &e);
+      //printf("EVALUATED = %d %c %d = %d\n", *arg1, expr[i],*arg2, e);
+    }
+    else{
+      st = ERROR;
     }
   }
 
-  result = stack_pop(s);
+  a = stack_pop(s);
+  *result = a[0];
 
   if(stack_isEmpty(s)==FALSE){
     st = ERROR;
