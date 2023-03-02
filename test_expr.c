@@ -92,8 +92,6 @@ void test_many_evalPostfix() {
   for(i=0; i<num_tests; i++){
     test_evalPostfix(all_tests[i]);
   }
-
-  //test_evalPostfix(all_tests[4]);
   
   free(all_tests);
 }

@@ -135,23 +135,40 @@ Bool balancedParens(char *str){
 
 Status evalPostfix(char *expr, int *result){
   Stack * s = NULL;
-  int i, e;
+  int i;
   Status st = OK;
-  int *arg2, *arg1, *push, *a;
+  int *arg2, *arg1, *push, *a, *e;
 
   if(!expr || !result) return ERROR;
   s = stack_init();
+  if(!s){
+    stack_free(s);
+    return ERROR;
+  }
 
   for(i=0; i<strlen(expr); i++){
     if(isOperand(expr[i])==TRUE && isIntOperand(expr[i])==TRUE){
       push = int_init(expr[i]-48);
-      st = stack_push(s, push)==ERROR;
+      if(!push){
+        int_free(push);
+        stack_free(s);
+        return ERROR;
+      }
+      
+      st = stack_push(s, push);
+      if(st == ERROR){
+        int_free(push);
+        stack_free(s);
+        return ERROR;
+      }
     }
     else if(isOperator(expr[i])==TRUE){
       if(stack_isEmpty(s)==FALSE){
         arg2 = stack_pop(s);
       }
       else{
+        int_free(push);
+        stack_free(s);
         return ERROR;
       }
       
@@ -159,28 +176,48 @@ Status evalPostfix(char *expr, int *result){
         arg1 = stack_pop(s);
       }
       else{
+        int_free(push);
+        stack_free(s);
         return ERROR;
       }
 
-      e =evaluate(*arg1, *arg2, expr[i]);
+      e =int_init(evaluate(*arg1, *arg2, expr[i]));
+      if(!e){
+        int_free(e);
+        stack_free(s);
+        return ERROR;
+      }
       
-      st = stack_push(s, &e);
-      //printf("EVALUATED = %d %c %d = %d\n", *arg1, expr[i],*arg2, e);
+      st = stack_push(s, e);
+      if(st == ERROR){
+        int_free(e);
+        stack_free(s);
+        return ERROR;
+      }
+
+      int_free(arg1);
+      int_free(arg2);
     }
     else{
-      st = ERROR;
+      int_free(push);
+      stack_free(s);
+      return ERROR;;
     }
   }
 
   a = stack_pop(s);
-  *result = a[0];
+  *result = *a;
+  
+  int_free(a);
 
   if(stack_isEmpty(s)==FALSE){
-    st = ERROR;
+    int_free(e);
+    stack_free(s);
+    return ERROR;
   }
 
   stack_free(s);
   
-  return st;
+  return OK;
 }
 // END CODE
