@@ -2,6 +2,7 @@
 #include "stack.h"
 
 
+
 /**
  * @brief: Merges two stacks
  *
@@ -11,3 +12,37 @@
  * @return The function returns OK or ERROR
 **/
 Status mergeStacks (Stack *sin1, Stack *sin2, Stack *sout);
+
+
+Status mergeStacks (Stack *sin1, Stack *sin2, Stack *sout){
+    if(!sin1 || !sin2 || !sout) return ERROR;
+
+    Stack * ps;
+    void * e;
+    
+    while(stack_isEmpty(sin1)==FALSE && stack_isEmpty(sin2)==FALSE){
+        if(stack_top(sin1)>stack_top(sin2)){
+            e = stack_pop(sin1);
+        }
+        else{
+            e = stack_pop(sin2);
+        }
+        stack_push(sout, e);
+    }
+    if(stack_isEmpty(sin1)==TRUE){
+        ps = sin2;
+    }
+    else{
+        ps = sin1;
+    }
+    while(stack_isEmpty(sout)==FALSE){
+        e = stack_pop(ps);
+        stack_push(sout, e);
+    }
+    
+    return OK;
+}
+
+int main(int argc, char**argv){
+    
+}
