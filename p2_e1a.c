@@ -44,5 +44,18 @@ Status mergeStacks (Stack *sin1, Stack *sin2, Stack *sout){
 }
 
 int main(int argc, char**argv){
-    
+    FILE * f1;
+    FILE * f2;
+
+    f1 = fopen(argv[1], "r");
+    if(!f1){
+        printf("ERROR, el nombre del archivo 1 es incorrecto.\n"); 
+        return -1;
+    }
+
+    f2 = fopen(argv[2], "r");
+    if(!f1){
+        printf("ERROR, el nombre del archivo 1 es incorrecto.\n"); 
+        return -1;
+    }
 }
