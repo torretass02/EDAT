@@ -204,6 +204,12 @@ long *graph_getConnectionsFromTag(const Graph *g, char *tag){
     return array;
 }
 
+Vertex ** graph_get_vertex(const Graph *g){
+    if(!g) return NULL;
+    
+    return g->vertices;
+}
+
 int graph_print (FILE *pf, const Graph *g){
     if(!pf || !g) return -1;
 

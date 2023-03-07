@@ -158,6 +158,8 @@ int graph_getNumberOfConnectionsFromTag(const Graph *g, char *tag);
  */
 long *graph_getConnectionsFromTag(const Graph *g, char *tag);
 
+Vertex ** graph_get_vertex(const Graph *g);
+
 /**
  * @brief Prints a graph.
  *

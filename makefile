@@ -17,17 +17,23 @@ p2_e1a: p2_e1a.o libstack.a
 p2_e1a.o: p2_e1a.c
 	$(CC) -c -o $@ $< $(CFLAGS) $(IFLAGS)
 
-p2_e1b: p2_e1b.o libstack.a
+p2_e1b: p2_e1b.o vertex.o graph.o libstack.a
 	$(CC) -o $@ $< $(LDFLAGS) $(LDLIBS) $(LIBS)
 
-p2_e1b.o: p2_e1b.c
+p2_e1b.o: p2_e1b.c vertex.h graph.h
+	$(CC) -c -o $@ $< $(CFLAGS) $(IFLAGS)
+
+vertex.o: vertex.c vertex.h
+	$(CC) -c -o $@ $< $(CFLAGS) $(IFLAGS)
+
+graph.o: graph.c graph.h vertex.h
 	$(CC) -c -o $@ $< $(CFLAGS) $(IFLAGS)
 
 run:
 	./p2_e1b grades1.txt grades2.txt
 
 runv:
-	valgrind --leak-check=full ./p2_e1b grades1.txt grades2.txt
+	valgrind --leak-check=full ./p2_e1b cities1.txt cities2.txt
 
 clear:
 	rm -rf *.o 

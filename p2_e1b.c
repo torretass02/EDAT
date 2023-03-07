@@ -1,5 +1,6 @@
 #include "stack.h"
 #include "file_utils.h"
+#include "graph.h"
 
 
 /**
@@ -48,16 +49,16 @@ Status mergeStacks (Stack *sin1, Stack *sin2, Stack *sout){
 int main(int argc, char**argv){
     FILE * f1;
     FILE * f2;
-    int num_grades;
-    char desc[1024];
     Stack * s1;
     Stack * s2; 
     Stack * merged;
-    float * array;
-
+    Graph * g1;
+    Graph *g2;
+    int n1, n2;
     s1 = stack_init();
     s2 = stack_init();
     merged = stack_init();
+    Vertex **vertices;
 
     f1 = fopen(argv[1], "r");
     if(!f1){
@@ -65,54 +66,25 @@ int main(int argc, char**argv){
         return -1;
     }
 
-    fgets(desc, 1024, f1);
-    sscanf(desc, "%d", &num_grades);
-
-    array = malloc(sizeof(float)*num_grades);
-
-    for(int i = 0; i<num_grades; i++){
-        fgets(desc, 1024, f1);
-        sscanf(desc, "%f", &array[i]);
-    }
-
-    for(int i = 0; i<num_grades; i++){
-        stack_push(s1, &array[i]);
-    }
-
-    printf("Ranking 0:\n");
-
-    stack_print(stdout, s1, float_print);
-    
     f2 = fopen(argv[2], "r");
-    if(!f1){
+    if(!f2){
         printf("ERROR, el nombre del archivo 1 es incorrecto.\n"); 
         return -1;
     }
 
-    fgets(desc, 1024, f2);
-    sscanf(desc, "%d", &num_grades);
+    graph_readFromFile(f1, g1);
+    graph_readFromFile(f2, g2);
 
-    array = malloc(sizeof(float)*num_grades);
+    n1 = graph_getNumberOfVertices(g1);
+    n2 = graph_getNumberOfVertices(g2);
 
-    for(int i = 0; i<num_grades; i++){
-        fgets(desc, 1024, f2);
-        sscanf(desc, "%f", &array[i]);
+    vertices = graph_get_vertex(g1);
+
+    for(int i=0; i<n1; i++){
+        vertex_print(stdout, vertices[i]);
     }
-
-    for(int i = 0; i<num_grades; i++){
-        stack_push(s2, &array[i]);
-    }
-
-    printf("Ranking 1:\n");
-
-    stack_print(stdout, s2, float_print);
-
-    mergeStacks(s1, s2,merged);
     
-    stack_print(stdout, merged, float_print);
-
-    stack_free(s1);
-    stack_free(s2);
-    stack_free(merged);
-    float_free(array);
+    for(int i = 0; i<n1; i++){
+        stack_push(s1, &vertices[i]);
+    }
 }
