@@ -14,7 +14,7 @@ Status mergeStacks (Stack *sin1, Stack *sin2, Stack *sout);
 
 Status mergeStacks (Stack *sin1, Stack *sin2, Stack *sout){
     if(!sin1 || !sin2 || !sout) return ERROR;
-
+    
     Stack * ps;
     void * e;
     int *n1, *n2;
