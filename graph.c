@@ -204,9 +204,9 @@ long *graph_getConnectionsFromTag(const Graph *g, char *tag){
     return array;
 }
 
-Vertex ** graph_get_vertex(const Graph *g){
+Vertex ** graph_get_vertex(Graph * g){
     if(!g) return NULL;
-    
+
     return g->vertices;
 }
 

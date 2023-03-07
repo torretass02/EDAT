@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -ggdb
+CFLAGS=-g -Wall -ggdb
 IFLAGS=-I./
 LDFLAGS=-L./
 LDLIBS=-lstack
@@ -11,22 +11,24 @@ all: p2_e1a
 # $< es el primer item en la lista de dependencias
 # $^ son todos los archivos que se encuentran a la derecha de ':'(dependencias)
 ########################################################################
+all: p2_e1a p2_e1b
+
 p2_e1a: p2_e1a.o libstack.a
 	$(CC) -o $@ $< $(LDFLAGS) $(LDLIBS) $(LIBS)
 
-p2_e1a.o: p2_e1a.c
-	$(CC) -c -o $@ $< $(CFLAGS) $(IFLAGS)
-
-p2_e1b: p2_e1b.o vertex.o graph.o libstack.a
-	$(CC) -o $@ $< $(LDFLAGS) $(LDLIBS) $(LIBS)
-
-p2_e1b.o: p2_e1b.c vertex.h graph.h
-	$(CC) -c -o $@ $< $(CFLAGS) $(IFLAGS)
+p2_e1b: p2_e1b.o graph.o vertex.o libstack.a
+	$(CC) -o $@ $< $(LDFLAGS) $(LDLIBS) $(LIBS) graph.o vertex.o
 
 vertex.o: vertex.c vertex.h
 	$(CC) -c -o $@ $< $(CFLAGS) $(IFLAGS)
 
 graph.o: graph.c graph.h vertex.h
+	$(CC) -c -o $@ $< $(CFLAGS) $(IFLAGS)
+
+p2_e1a.o: p2_e1a.c
+	$(CC) -c -o $@ $< $(CFLAGS) $(IFLAGS)
+
+p2_e1b.o: p2_e1b.c vertex.h graph.h
 	$(CC) -c -o $@ $< $(CFLAGS) $(IFLAGS)
 
 run:
@@ -39,4 +41,4 @@ clear:
 	rm -rf *.o 
 
 clean:
-	rm -rf *.o p2_e1a
+	rm -rf *.o p2_e1a p2_e1b

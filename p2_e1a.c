@@ -17,7 +17,7 @@ Status mergeStacks (Stack *sin1, Stack *sin2, Stack *sout){
     
     Stack * ps;
     void * e;
-    int *n1, *n2;
+    float *n1, *n2;
     
     while(stack_isEmpty(sin1)==FALSE && stack_isEmpty(sin2)==FALSE){
         n1 = stack_top(sin1);
@@ -46,13 +46,10 @@ Status mergeStacks (Stack *sin1, Stack *sin2, Stack *sout){
 }
 
 int main(int argc, char**argv){
-    FILE * f1;
-    FILE * f2;
+    FILE *f1, *f2;
     int num_grades;
     char desc[1024];
-    Stack * s1;
-    Stack * s2; 
-    Stack * merged;
+    Stack *s1, *s2, *merged;
     float * array;
 
     s1 = stack_init();
@@ -108,6 +105,8 @@ int main(int argc, char**argv){
     stack_print(stdout, s2, float_print);
 
     mergeStacks(s1, s2,merged);
+
+    printf("Joint Ranking:\n");
     
     stack_print(stdout, merged, float_print);
 
