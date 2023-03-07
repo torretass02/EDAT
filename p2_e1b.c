@@ -1,7 +1,6 @@
 #include "stack.h"
 #include "file_utils.h"
 
-
 /**
  * @brief: Merges two stacks
  *
