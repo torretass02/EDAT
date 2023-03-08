@@ -11,12 +11,15 @@ all: p2_e1a
 # $< es el primer item en la lista de dependencias
 # $^ son todos los archivos que se encuentran a la derecha de ':'(dependencias)
 ########################################################################
-all: p2_e1a p2_e1b
+all: p2_e1a p2_e1b p2_e2
 
 p2_e1a: p2_e1a.o libstack.a
 	$(CC) -o $@ $< $(LDFLAGS) $(LDLIBS) $(LIBS)
 
 p2_e1b: p2_e1b.o graph.o vertex.o libstack.a
+	$(CC) -o $@ $< $(LDFLAGS) $(LDLIBS) $(LIBS) graph.o vertex.o
+
+p2_e2: p2_e2.o graph.o vertex.o libstack.a
 	$(CC) -o $@ $< $(LDFLAGS) $(LDLIBS) $(LIBS) graph.o vertex.o
 
 vertex.o: vertex.c vertex.h
@@ -31,6 +34,9 @@ p2_e1a.o: p2_e1a.c
 p2_e1b.o: p2_e1b.c vertex.h graph.h
 	$(CC) -c -o $@ $< $(CFLAGS) $(IFLAGS)
 
+p2_e2.o: p2_e2.c vertex.h graph.h
+	$(CC) -c -o $@ $< $(CFLAGS) $(IFLAGS)
+
 run:
 	./p2_e1b grades1.txt grades2.txt
 
@@ -41,4 +47,4 @@ clear:
 	rm -rf *.o 
 
 clean:
-	rm -rf *.o p2_e1a p2_e1b
+	rm -rf *.o p2_e1a p2_e1b p2_e2

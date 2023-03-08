@@ -7,6 +7,7 @@ struct _Vertex {
   long id;
   char tag[TAG_LENGTH];
   Label state;
+  int index;
 };
 
 /*----------------------------------------------------------------------------------------*/
@@ -73,6 +74,7 @@ Vertex * vertex_init (){
   vertex_setId(v, 0);
   vertex_setTag(v, "");
   vertex_setState(v, WHITE);
+  vertex_set_index(v, 0);
   
   return v;
 }
@@ -99,6 +101,12 @@ Label vertex_getState (const Vertex * v){
   return v->state;
 }
 
+int vertex_get_index(const Vertex * v){
+  if(!v) return -1;
+
+  return v->index;
+}
+
 Status vertex_setId (Vertex * v, const long id){
   if(!v || !id) return ERROR;
 
@@ -117,6 +125,13 @@ Status vertex_setState (Vertex * v, const Label state){
   if(!v || (state!=0 && state!=1)) return ERROR;
   
   v->state = state;
+  return OK;
+}
+
+Status vertex_set_index(Vertex * v, const int index){
+  if(!v || !index) return ERROR;
+
+  v->index = index;
   return OK;
 }
 
@@ -147,11 +162,13 @@ void * vertex_copy (const void * src){
   vertex_setId(v, vertex_getId(src));
   vertex_setTag(v, vertex_getTag(src));
   vertex_setState(v, vertex_getState(src));
+  vertex_set_index(v, vertex_get_index(src));
+  
   return v;
 }
 
 int vertex_print (FILE * pf, const void * v){
   if(!pf || !v) return -1;
   
-  return fprintf(pf, "[%ld, %s, %d]", vertex_getId(v), vertex_getTag(v), vertex_getState(v));
+  return fprintf(pf, "[%ld, %s, %d, %d]", vertex_getId(v), vertex_getTag(v), vertex_getState(v), vertex_get_index(v));
 }

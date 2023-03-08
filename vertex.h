@@ -123,7 +123,15 @@ const char* vertex_getTag (const Vertex * v);
  */
 Label vertex_getState (const Vertex * v);
 
-
+/**
+ * @brief Gets the index of a given vertex.
+ *
+ * @param Vertex pointer
+ *
+ * @return Returns the index of a given vertex, or -1 in 
+ * case of error.
+ */
+int vertex_get_index(const Vertex * v);
 
 /**
  * @brief Modifies the id of a given vertex.
@@ -157,7 +165,15 @@ Status vertex_setTag (Vertex * v, const char * tag);
  */
 Status vertex_setState (Vertex * v, const Label state);
 
-
+/**
+ * @brief Modifies the index of a given vertex
+ *
+ * @param v Vertex pointer
+ * @param index New vertex index
+ *
+ * @return Returns OK or ERROR in case of error.
+ */
+Status vertex_set_index(Vertex * v, const int index);
 
 /**
  * @brief Compares two vertices.

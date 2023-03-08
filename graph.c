@@ -85,6 +85,7 @@ Status graph_newVertex(Graph *g, char *desc){
 
     if(graph_contains(g, vertex_getId(v))==FALSE){
         g->vertices[g->num_vertices] = v;
+        vertex_set_index(g->vertices[g->num_vertices], g->num_vertices);
         g->num_vertices++;
         return OK;
     }
