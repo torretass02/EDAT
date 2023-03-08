@@ -74,7 +74,7 @@ Vertex * vertex_init (){
   vertex_setId(v, 0);
   vertex_setTag(v, "");
   vertex_setState(v, WHITE);
-  vertex_set_index(v, 0);
+  vertex_setIndex(v, 0);
   
   return v;
 }
@@ -101,7 +101,7 @@ Label vertex_getState (const Vertex * v){
   return v->state;
 }
 
-int vertex_get_index(const Vertex * v){
+int vertex_getIndex(const Vertex * v){
   if(!v) return -1;
 
   return v->index;
@@ -128,7 +128,7 @@ Status vertex_setState (Vertex * v, const Label state){
   return OK;
 }
 
-Status vertex_set_index(Vertex * v, const int index){
+Status vertex_setIndex(Vertex * v, const int index){
   if(!v || !index) return ERROR;
 
   v->index = index;
@@ -162,7 +162,7 @@ void * vertex_copy (const void * src){
   vertex_setId(v, vertex_getId(src));
   vertex_setTag(v, vertex_getTag(src));
   vertex_setState(v, vertex_getState(src));
-  vertex_set_index(v, vertex_get_index(src));
+  vertex_setIndex(v, vertex_getIndex(src));
   
   return v;
 }
@@ -170,5 +170,5 @@ void * vertex_copy (const void * src){
 int vertex_print (FILE * pf, const void * v){
   if(!pf || !v) return -1;
   
-  return fprintf(pf, "[%ld, %s, %d, %d]", vertex_getId(v), vertex_getTag(v), vertex_getState(v), vertex_get_index(v));
+  return fprintf(pf, "[%ld, %s, %d, %d]", vertex_getId(v), vertex_getTag(v), vertex_getState(v), vertex_getIndex(v));
 }

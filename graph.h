@@ -13,6 +13,7 @@
 
 #include "vertex.h"
 #include "types.h"
+#include "stack.h"
 
 typedef struct _Graph Graph;
 
@@ -158,7 +159,12 @@ int graph_getNumberOfConnectionsFromTag(const Graph *g, char *tag);
  */
 long *graph_getConnectionsFromTag(const Graph *g, char *tag);
 
-Vertex ** graph_get_vertex(Graph *g);
+Vertex ** graph_get_all_vertex(Graph *g);
+
+Vertex * graph_get_Vertex(const Graph *g, long id);
+
+Status graph_depthSearch (Graph *g, long from_id, long to_id);
+
 
 /**
  * @brief Prints a graph.

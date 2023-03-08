@@ -15,31 +15,23 @@ of a graph using the depth-first search algorithm
  * @param to_id, id of the destination Vertex
  * @return The function returns OK or ERROR
 **/
-Status graph_depthSearch (Graph *g, long from_id, long to_id);
 
-Status graph_depthSearch (Graph *g, long from_id, long to_id){
-    if(!g || !from_id || !to_id) return ERROR;
 
-    Status st;
-    Stack * s;
-
-    s = stack_init();
-    stack_push(s, )
-
-    while(stack_isEmpty(s)==FALSE && st = OK){
-        
-    }
-}
-
-int main(){
+int main(int argc, char**argv){
+    FILE * f;
     Graph * g;
 
     g = graph_init();
 
-    graph_newVertex(g, "id:500 tag:MARICON state:1");
-    graph_newVertex(g, "id:800 tag:SISISI state:1");
-    graph_newVertex(g, "id:53 tag:HOLAAA state:1");
+    f = fopen(argv[1], "r");
+    if(!f){
+        printf("ERROR, el nombre del archivo es incorrecto.\n"); 
+        return -1;
+    }
 
+    graph_readFromFile(f, g);
+
+    printf("Imput graph:\n");
     graph_print(stdout, g);
-
+    
 }

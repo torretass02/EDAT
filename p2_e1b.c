@@ -130,7 +130,7 @@ int main(int argc, char**argv){
     n1 = graph_getNumberOfVertices(g1);
     n2 = graph_getNumberOfVertices(g2);
 
-    vertices = graph_get_vertex(g1);
+    vertices = graph_get_all_vertex(g1);
     
     for(int i = 0; i<n1; i++){
         stack_push(s1, vertices[i]);
@@ -140,7 +140,7 @@ int main(int argc, char**argv){
 
     stack_print(stdout, s1, vertex_print);
 
-    vertices = graph_get_vertex(g2);
+    vertices = graph_get_all_vertex(g2);
 
     for(int i = 0; i<n2; i++){
         stack_push(s2, vertices[i]);

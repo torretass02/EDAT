@@ -131,7 +131,7 @@ Label vertex_getState (const Vertex * v);
  * @return Returns the index of a given vertex, or -1 in 
  * case of error.
  */
-int vertex_get_index(const Vertex * v);
+int vertex_getIndex(const Vertex * v);
 
 /**
  * @brief Modifies the id of a given vertex.
@@ -173,7 +173,7 @@ Status vertex_setState (Vertex * v, const Label state);
  *
  * @return Returns OK or ERROR in case of error.
  */
-Status vertex_set_index(Vertex * v, const int index);
+Status vertex_setIndex(Vertex * v, const int index);
 
 /**
  * @brief Compares two vertices.

@@ -20,12 +20,12 @@ p2_e1b: p2_e1b.o graph.o vertex.o libstack.a
 	$(CC) -o $@ $< $(LDFLAGS) $(LDLIBS) $(LIBS) graph.o vertex.o
 
 p2_e2: p2_e2.o graph.o vertex.o libstack.a
-	$(CC) -o $@ $< $(LDFLAGS) $(LDLIBS) $(LIBS) graph.o vertex.o
+	$(CC) -o $@ $< $(LDFLAGS) $(LDLIBS) $(LIBS) graph.o vertex.o libstack.a
 
-vertex.o: vertex.c vertex.h
+vertex.o: vertex.c vertex.h 
 	$(CC) -c -o $@ $< $(CFLAGS) $(IFLAGS)
 
-graph.o: graph.c graph.h vertex.h
+graph.o: graph.c graph.h vertex.h 
 	$(CC) -c -o $@ $< $(CFLAGS) $(IFLAGS)
 
 p2_e1a.o: p2_e1a.c
@@ -34,7 +34,7 @@ p2_e1a.o: p2_e1a.c
 p2_e1b.o: p2_e1b.c vertex.h graph.h
 	$(CC) -c -o $@ $< $(CFLAGS) $(IFLAGS)
 
-p2_e2.o: p2_e2.c vertex.h graph.h
+p2_e2.o: p2_e2.c vertex.h graph.h 
 	$(CC) -c -o $@ $< $(CFLAGS) $(IFLAGS)
 
 run:
