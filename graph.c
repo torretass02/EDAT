@@ -333,6 +333,8 @@ Status graph_depthSearch (Graph *g, long from_id, long to_id){
             }
         }
     }
+    
+    
     stack_free(s);
 
     return st;

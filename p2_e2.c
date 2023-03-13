@@ -20,6 +20,7 @@ of a graph using the depth-first search algorithm
 int main(int argc, char**argv){
     FILE * f;
     Graph * g;
+    long *id_from, *id_to;
 
     g = graph_init();
 
@@ -29,9 +30,22 @@ int main(int argc, char**argv){
         return -1;
     }
 
+    id_from = str2int(argv[2]);
+    id_to = str2int(argv[3]);
+
     graph_readFromFile(f, g);
 
     printf("Imput graph:\n");
     graph_print(stdout, g);
+
+    printf("From Vertex id: %ld\n", *id_from);
+    printf("To Vertex id: %ld\n", *id_to);
+
+    graph_depthSearch(g, *id_from, *id_to);
+
+    printf("Output:\n");
+
+    graph_print(stdout, g);
+
     
 }
