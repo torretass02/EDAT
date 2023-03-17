@@ -120,42 +120,36 @@ void *dequeue_getBack(const Dequeue *q) {
 }
 
 //--------------------------------------------------------------------------
-void *dequeue_popBack(Dequeue *q){
-  if (q == NULL) return NULL; // deque nulo
-  
-  if (q->is_empty) return NULL; // deque vacío
-  
-  void *elem = q->data[q->rear];
-  
-  if (q->front == q->rear) { // si el deque tenía un solo elemento
-    q->front = -1;
-    q->rear = -1;
-    q->is_empty = TRUE;
-  } 
-  else{
-    q->rear = (q->rear + MAX_DEQUEUE - 1) % MAX_DEQUEUE;
+void *dequeue_popBack(Dequeue *q) {
+  void *e = NULL;
+
+  if (q == NULL || dequeue_isEmpty(q) == TRUE) {
+    return NULL;
   }
-  return elem;
+
+  q->rear = (q->rear - 1 + MAX_DEQUEUE) % MAX_DEQUEUE;
+  e = q->data[q->rear];
+  q->data[q->rear] = NULL;
+
+  if (q->front == q->rear) {
+    q->is_empty = TRUE;
+  }
+
+  return e;
 }
  
 
 //--------------------------------------------------------------------------
-Status dequeue_pushFront(Dequeue *q, const void *elem){ 
-  if (q == NULL) return ERROR; // deque nulo
-    if (q->is_empty == TRUE) { // si el deque está vacío
-        q->front = 0;
-        q->rear = 0;
-        q->data[0] = (void *) elem;
-        q->is_empty = FALSE;
-    } 
-    else if (_dequeue_isFull(q) == TRUE) { // si el deque está lleno
-      return ERROR;
-    } 
-    else { // si el deque tiene elementos pero no está lleno
-      q->front = (q->front + MAX_DEQUEUE - 1) % MAX_DEQUEUE;
-      0  q->data[q->front] = (void *) elem;
-    }
-    return OK; 
+Status dequeue_pushFront(Dequeue *q, const void *elem) {
+  if (q == NULL || elem == NULL || _dequeue_isFull(q) == TRUE) {
+    return ERROR;
+  }
+
+  q->front = (q->front - 1 + MAX_DEQUEUE) % MAX_DEQUEUE;
+  q->data[q->front] = (void *)elem;
+  q->is_empty = FALSE;
+
+  return OK;
 }
 
 //--------------------------------------------------------------------------
