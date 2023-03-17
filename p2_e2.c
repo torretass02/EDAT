@@ -41,11 +41,7 @@ int main(int argc, char**argv){
     printf("From Vertex id: %ld\n", *id_from);
     printf("To Vertex id: %ld\n", *id_to);
 
-    graph_depthSearch(g, *id_from, *id_to);
 
     printf("Output:\n");
-
-    graph_print(stdout, g);
-
-    
+    graph_depthSearch(g, *id_from, *id_to);
 }

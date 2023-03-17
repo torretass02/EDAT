@@ -317,18 +317,21 @@ Status graph_depthSearch (Graph *g, long from_id, long to_id){
 
     while(stack_isEmpty(s)==FALSE && st == OK){
         v0 = stack_pop(s);
+        vertex_print(stdout, v0);
+        printf("\n");
         if(vertex_cmp(v0, vt)==0){
             st = ERROR;
+            stack_free(s);
             return st;
         }
         else{
             if(vertex_getState(v0)==WHITE){
                 vertex_setState(v0, BLACK);
-            }
-            connections = graph_getConnectionsFromId(g, vertex_getId(v0));
-            for(i=0; i<graph_getNumberOfConnectionsFromId(g, vertex_getId(v0)); i++){
-                if(vertex_getState(graph_get_Vertex(g, connections[i])) == WHITE){
-                    stack_push(s, graph_get_Vertex(g, connections[i]));
+                connections = graph_getConnectionsFromId(g, vertex_getId(v0));
+                for(i=0; i<graph_getNumberOfConnectionsFromId(g, vertex_getId(v0)); i++){
+                    if(vertex_getState(graph_get_Vertex(g, connections[i])) == WHITE){
+                        stack_push(s, graph_get_Vertex(g, connections[i]));
+                    }
                 }
             }
         }
