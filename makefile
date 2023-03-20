@@ -38,10 +38,20 @@ p2_e2.o: p2_e2.c vertex.h graph.h
 	$(CC) -c -o $@ $< $(CFLAGS) $(IFLAGS)
 
 run:
-	./p2_e1b grades1.txt grades2.txt
+	@echo ">>>>>>Running p2_e1a"
+	./p2_e1a grades1.txt grades2.txt
+	@echo ">>>>>>Running p2_e1b"
+	./p2_e1b cities1.txt cities2.txt
+	@echo ">>>>>>Running p2_e2"
+	./p2_e2 g2.txt 100 700
 
 runv:
-	valgrind --leak-check=full ./p2_e1b cities1.txt cities2.txt
+	@echo ">>>>>>Running p2_e1a with valgrind"
+	valgrind --leak-check=full ./p2_e1a grades1.txt grades2.txt
+	@echo ">>>>>>Running p2_e1b with valgrind"
+	valgrind --leak-check=full ./p2_e1b	cities1.txt cities2.txt
+	@echo ">>>>>>Running p2_e2 with valgrind"
+	valgrind --leak-check=full ./p2_e2 g2.txt 100 700
 
 clear:
 	rm -rf *.o 

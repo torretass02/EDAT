@@ -57,6 +57,16 @@ int main(int argc, char**argv){
     int n1, n2;
     Vertex **vertices;
 
+    if(argc < 3){
+        printf("ERROR, debe incluir más argumentos.\n");
+        return -1;
+    }
+
+    if(argc > 3){
+        printf("ERROR, ha introducido demasiados argumentos.\n");
+        return -1;
+    }
+
     s1 = stack_init();
     if(!s1){
         stack_free(s1);
@@ -133,7 +143,7 @@ int main(int argc, char**argv){
     vertices = graph_get_all_vertex(g1);
     
     for(int i = 0; i<n1; i++){
-        stack_push(s1, vertices[i]);
+        if(stack_push(s1, vertices[i])==ERROR) return -1; 
     }
 
     printf("Ranking 0:\n");
@@ -143,14 +153,23 @@ int main(int argc, char**argv){
     vertices = graph_get_all_vertex(g2);
 
     for(int i = 0; i<n2; i++){
-        stack_push(s2, vertices[i]);
+        if(stack_push(s2, vertices[i])==ERROR) return -1;
     }
 
     printf("Ranking 1:\n");
 
     stack_print(stdout, s2, vertex_print);
 
-    mergeStacks(s1, s2, merged, vertex_cmp);
+    if(mergeStacks(s1, s2, merged, vertex_cmp)==ERROR){
+        stack_free(s1);
+        stack_free(s2);
+        stack_free(merged);
+        graph_free(g1);
+        graph_free(g2);
+        fclose(f1);
+        fclose(f2);
+        return -1;
+    }
 
     printf("Joint Ranking:\n");
 
@@ -161,4 +180,6 @@ int main(int argc, char**argv){
     stack_free(merged);
     graph_free(g1);
     graph_free(g2);
+    fclose(f1);
+    fclose(f2);
 }

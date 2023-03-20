@@ -1,6 +1,7 @@
 #ifndef _FILE_UTILS_H
 #define _FILE_UTILS_H
 
+#include <stdio.h>
 #include "types.h"
 
 

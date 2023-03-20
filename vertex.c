@@ -17,7 +17,7 @@ Private function:
 Status vertex_setField (Vertex *v, char *key, char *value);
 
 Status vertex_setField (Vertex *v, char *key, char *value) {
-  if (!key || !value) return ERROR;
+  if (key == NULL || value == NULL) return ERROR;
 
   if (strcmp(key, "id") == 0) {
     return vertex_setId(v, atol(value));
@@ -66,15 +66,13 @@ Vertex * vertex_initFromString(char *descr){
 }
 
 Vertex * vertex_init (){ 
-  Vertex * v = NULL;   
 
-  v = (Vertex*) malloc(sizeof(Vertex));
+  Vertex * v =  (Vertex*) malloc(sizeof(Vertex));
   if(!v) return NULL;
-
-  vertex_setId(v, 0);
-  vertex_setTag(v, "");
-  vertex_setState(v, WHITE);
-  vertex_setIndex(v, 0);
+  v->id = 0;
+  strncpy(v->tag, "", TAG_LENGTH);
+  v->state = WHITE;
+  v->index = 0;
   
   return v;
 }
@@ -85,7 +83,7 @@ void vertex_free (void * v){
 
 long vertex_getId (const Vertex * v){
   if(!v) return -1;
-
+  if(!v->id) return -1;
   return v->id;
 }
 
@@ -116,8 +114,7 @@ Status vertex_setId (Vertex * v, const long id){
 
 Status vertex_setTag (Vertex * v, const char * tag){
   if(!v || !tag) return ERROR;
-
-  strcpy(v->tag, tag);
+  strncpy(v->tag, tag, TAG_LENGTH);//LUIS
   return OK;
 }
 
@@ -169,6 +166,11 @@ void * vertex_copy (const void * src){
 
 int vertex_print (FILE * pf, const void * v){
   if(!pf || !v) return -1;
-  
-  return fprintf(pf, "[%ld, %s, %d, %d]", vertex_getId(v), vertex_getTag(v), vertex_getState(v), vertex_getIndex(v));
+  int numero;
+  const char* tag; 
+  tag= vertex_getTag(v);
+  if(tag == NULL) return -1;
+  numero = fprintf(pf, "[%ld, %s, %d, %d]", vertex_getId(v), tag, vertex_getState(v), vertex_getIndex(v));
+
+  return numero;
 }

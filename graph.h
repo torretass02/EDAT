@@ -11,6 +11,9 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include "vertex.h"
 #include "types.h"
 #include "stack.h"
@@ -161,7 +164,7 @@ long *graph_getConnectionsFromTag(const Graph *g, char *tag);
 
 Vertex ** graph_get_all_vertex(Graph *g);
 
-Vertex * graph_get_Vertex(const Graph *g, long id);
+Vertex * graph_get_Vertex(Graph *g, long id);
 
 Status graph_depthSearch (Graph *g, long from_id, long to_id);
 

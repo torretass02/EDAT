@@ -28,7 +28,7 @@ Status mergeStacks (Stack *sin1, Stack *sin2, Stack *sout){
         else{
             e = stack_pop(sin2);
         }
-        stack_push(sout, e);
+        if(stack_push(sout, e)==ERROR) return ERROR;
     }
     if(stack_isEmpty(sin1)==TRUE){
         ps = sin2;
@@ -38,7 +38,7 @@ Status mergeStacks (Stack *sin1, Stack *sin2, Stack *sout){
     }
     while(stack_isEmpty(sout)==FALSE){
         e = stack_pop(ps);
-        stack_push(sout, e);
+        if(stack_push(sout, e)==ERROR)return ERROR;
         break;
     }
     
@@ -50,11 +50,38 @@ int main(int argc, char**argv){
     int num_grades;
     char desc[1024];
     Stack *s1, *s2, *merged;
-    float * array;
+    float *array1, *array2;
+    
+    if(argc < 3){
+        printf("ERROR, debe incluir más argumentos.\n");
+        return -1;
+    }
+
+    if(argc > 3){
+        printf("ERROR, ha introducido demasiados argumentos.\n");
+        return -1;
+    }
 
     s1 = stack_init();
+    if(!s1){
+        stack_free(s1);
+        return -1;
+    }
+
     s2 = stack_init();
+    if(!s2){
+        stack_free(s1);
+        stack_free(s2);
+        return -1;
+    }
+
     merged = stack_init();
+    if(!merged){
+        stack_free(s1);
+        stack_free(s2);
+        stack_free(merged);
+        return -1;
+    }
 
     f1 = fopen(argv[1], "r");
     if(!f1){
@@ -65,15 +92,15 @@ int main(int argc, char**argv){
     fgets(desc, 1024, f1);
     sscanf(desc, "%d", &num_grades);
 
-    array = malloc(sizeof(float)*num_grades);
+    array1 = malloc(sizeof(float)*num_grades);
 
     for(int i = 0; i<num_grades; i++){
         fgets(desc, 1024, f1);
-        sscanf(desc, "%f", &array[i]);
+        sscanf(desc, "%f", &array1[i]);
     }
 
     for(int i = 0; i<num_grades; i++){
-        stack_push(s1, &array[i]);
+        if(stack_push(s1, &array1[i])==ERROR) return -1;
     }
 
     printf("Ranking 0:\n");
@@ -81,31 +108,39 @@ int main(int argc, char**argv){
     stack_print(stdout, s1, float_print);
     
     f2 = fopen(argv[2], "r");
-    if(!f1){
-        printf("ERROR, el nombre del archivo 1 es incorrecto.\n"); 
+    if(!f2){
+        printf("ERROR, el nombre del archivo 2 es incorrecto.\n"); 
         return -1;
     }
 
     fgets(desc, 1024, f2);
     sscanf(desc, "%d", &num_grades);
 
-    array = malloc(sizeof(float)*num_grades);
+    array2 = malloc(sizeof(float)*num_grades);
 
     for(int i = 0; i<num_grades; i++){
         fgets(desc, 1024, f2);
-        sscanf(desc, "%f", &array[i]);
+        sscanf(desc, "%f", &array2[i]);
     }
 
     for(int i = 0; i<num_grades; i++){
-        stack_push(s2, &array[i]);
+        if(stack_push(s2, &array2[i])==ERROR) return -1;
     }
 
     printf("Ranking 1:\n");
 
     stack_print(stdout, s2, float_print);
 
-    mergeStacks(s1, s2,merged);
-
+    if(mergeStacks(s1, s2,merged)==ERROR){
+        stack_free(s1);
+        stack_free(s2);
+        stack_free(merged);
+        float_free(array1);
+        float_free(array2);
+        fclose(f1);
+        fclose(f2);
+        return -1;
+    }
     printf("Joint Ranking:\n");
     
     stack_print(stdout, merged, float_print);
@@ -113,5 +148,8 @@ int main(int argc, char**argv){
     stack_free(s1);
     stack_free(s2);
     stack_free(merged);
-    float_free(array);
+    float_free(array1);
+    float_free(array2);
+    fclose(f1);
+    fclose(f2);
 }
