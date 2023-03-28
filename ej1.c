@@ -13,8 +13,8 @@ typedef enum {
 
 
 typedef enum {
-    FALSE=0, /*!< False value */
-    TRUE=1  /*!< True value  */
+    FALSE=0,
+    TRUE=1
 } Bool;
 
 typedef struct _Book Book;
